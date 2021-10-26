@@ -1,4 +1,4 @@
-# Authors: Jenny Thieu and Jennifer Tran
+# Authors: Jenny Thieu, Jennifer Tran, and Yu "Dan" Liang
 # Start date: 10/26/2022
 # Meow Game with PyGame
 
@@ -8,7 +8,7 @@ import random
 
 pygame.init()
 
-clock = pygame.time.Clock()
+clock = pygame.time.Clock()     # set framerate of game
 fps = 60
 
 screen_width = 864          # set game window size
@@ -77,21 +77,21 @@ class Cat(pygame.sprite.Sprite):        # class for our player sprite, Thickems 
 class Column(pygame.sprite.Sprite):     # create class for column sprite
     def __init__(self, x_coord, y_coord, position):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load('images/column.png')
+        self.image = pygame.image.load('images/column.png')     # load the column image
         self.rect = self.image.get_rect()
         if position == 1:
-            self.image = pygame.transform.flip(self.image, False, True)
+            self.image = pygame.transform.flip(self.image, False, True)     # position columns upside down
             self.rect.bottomleft = [x_coord, y_coord - int(column_gap / 2)]
         if position == -1:
-            self.rect.topleft = [x_coord, y_coord + int(column_gap / 2)]
+            self.rect.topleft = [x_coord, y_coord + int(column_gap / 2)]    # position column on ground
 
-    def update(self):
+    def update(self):       # have columns scroll along in the game with player
         self.rect.x -= scroll_speed
         if self.rect.right < 0:
             self.kill()
 
 
-cat_pack = pygame.sprite.Group()
+cat_pack = pygame.sprite.Group()    # variable for sprites
 column_group = pygame.sprite.Group()
 
 thickems = Cat(100, int(screen_height / 2))
@@ -117,7 +117,7 @@ while run_game:      # run game loop
         game_over = True
         jumping = False
 
-    if not game_over:
+    if not game_over:   # condition for game to generate columns when not game over
         time_now = pygame.time.get_ticks()
         if time_now - last_column > column_frequency:
             column_height = random.randint(-100, 100)
@@ -131,14 +131,14 @@ while run_game:      # run game loop
         if abs(ground_scroll) > 35:
             ground_scroll = 0
 
-        column_group.update()
+        column_group.update()       # call to update columns
 
     for event in pygame.event.get():        # press X on window to exit game
         if event.type == pygame.QUIT:
             run_game = False
         if event.type == pygame.MOUSEBUTTONDOWN and jumping == False and game_over == False:
             # player will start with Thickems in air
-            jumping = True
+            jumping = True  # Thickems can jump
 
     pygame.display.update()
 
