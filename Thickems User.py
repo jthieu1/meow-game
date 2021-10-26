@@ -1,1 +1,0 @@
-# This is going to be the user. They are going to control Thick'ems.
