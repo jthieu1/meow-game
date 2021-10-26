@@ -4,6 +4,7 @@
 
 import pygame       # import pygame package to create working game
 from pygame.locals import *
+import random
 
 pygame.init()
 
@@ -18,6 +19,11 @@ pygame.display.set_caption('Meow Game')         # set the window name
 
 ground_scroll = 0   # speed which ground scrolls
 scroll_speed = 4
+jumping = False
+game_over = False
+column_gap = 200
+column_frequency = 1500     # how often pipes spawn in milliseconds
+last_column = pygame.time.get_ticks() - column_frequency    # interval between last column
 
 bg = pygame.image.load('images/bg.png')        # load resources used
 ground_img = pygame.image.load('images/terrain.png')
@@ -35,21 +41,58 @@ class Cat(pygame.sprite.Sprite):        # class for our player sprite, Thickems 
         self.image = self.images[self.index]
         self.rect = self.image.get_rect()       # create rectangle from boundaries of images
         self.rect.center = [x_coord, y_coord]   # center based off coordinates
+        self.velocity = 0       # set up velocity
+        self.clicking = False
 
     def update(self):
 
-        self.counter += 1       # increase counter for animation
-        tap_cooldown = 5    # after tapping five times, resets the animation so it can replay
+        if jumping:
+            self.velocity += 0.5        # speed Thickems moves
+            if self.velocity > 8:
+                self.velocity = 8       # reset velocity Thickems will fall so it doesn't keep increasing
+            if self.rect.bottom < 768:      # gravity, Thickems will fall down
+                self.rect.y += int(self.velocity)
 
-        if self.counter > tap_cooldown:
-            self.counter = 0
-            self.index += 1
-            if self.index >= len(self.images):
-                self.index = 0
-        self.image = self.images[self.index]    # update the image after the reset
+        if not game_over:
+            if pygame.mouse.get_pressed()[0] == 1 and self.clicking == False:   # jump button
+                self.clicking = True
+                self.velocity = -10
+            if pygame.mouse.get_pressed()[0] == 0:  # Reset clicking
+                self.clicking = False
+
+            self.counter += 1       # increase counter for animation
+            tap_cooldown = 5    # after tapping five times, resets the animation so it can replay
+
+            if self.counter > tap_cooldown:
+                self.counter = 0
+                self.index += 1
+                if self.index >= len(self.images):
+                    self.index = 0
+            self.image = self.images[self.index]    # update the image after the reset
+            self.image = pygame.transform.rotate(self.images[self.index], self.velocity * -3)   # affect rotation
+        else:
+            self.image = pygame.transform.rotate(self.images[self.index], -90)  # rotate 90 degrees
+
+
+class Column(pygame.sprite.Sprite):     # create class for column sprite
+    def __init__(self, x_coord, y_coord, position):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load('images/column.png')
+        self.rect = self.image.get_rect()
+        if position == 1:
+            self.image = pygame.transform.flip(self.image, False, True)
+            self.rect.bottomleft = [x_coord, y_coord - int(column_gap / 2)]
+        if position == -1:
+            self.rect.topleft = [x_coord, y_coord + int(column_gap / 2)]
+
+    def update(self):
+        self.rect.x -= scroll_speed
+        if self.rect.right < 0:
+            self.kill()
 
 
 cat_pack = pygame.sprite.Group()
+column_group = pygame.sprite.Group()
 
 thickems = Cat(100, int(screen_height / 2))
 
@@ -63,15 +106,39 @@ while run_game:      # run game loop
     screen.blit(bg, (0, 0))     # draws the background
     cat_pack.draw(screen)      # draws Thickems the Cat onto screen
     cat_pack.update()          # update Thickems
+    column_group.draw(screen)  # draws columns to screen
 
     screen.blit(ground_img, (ground_scroll, 768))   # draws the ground and scrolls
-    ground_scroll -= scroll_speed
-    if abs(ground_scroll) > 35:
-        ground_scroll = 0
+
+    if pygame.sprite.groupcollide(cat_pack, column_group, False, False) or thickems.rect.top < 0:   # for collision
+        game_over = True
+
+    if thickems.rect.bottom > 768:  # if Thickems hit the ground, set condition for GAME OVER
+        game_over = True
+        jumping = False
+
+    if not game_over:
+        time_now = pygame.time.get_ticks()
+        if time_now - last_column > column_frequency:
+            column_height = random.randint(-100, 100)
+            btm_column = Column(screen_width, int(screen_height / 2) + column_height, -1)
+            top_column = Column(screen_width, int(screen_height / 2) + column_height, 1)
+            column_group.add(btm_column)
+            column_group.add(top_column)
+            last_column = time_now
+
+        ground_scroll -= scroll_speed   # draws ground and scrolls
+        if abs(ground_scroll) > 35:
+            ground_scroll = 0
+
+        column_group.update()
 
     for event in pygame.event.get():        # press X on window to exit game
         if event.type == pygame.QUIT:
-            run = False
+            run_game = False
+        if event.type == pygame.MOUSEBUTTONDOWN and jumping == False and game_over == False:
+            # player will start with Thickems in air
+            jumping = True
 
     pygame.display.update()
 
