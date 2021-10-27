@@ -77,7 +77,7 @@ class Cat(pygame.sprite.Sprite):        # class for our player sprite, Thickems 
             self.image = self.images[self.index]    # update the image after the reset
             self.image = pygame.transform.rotate(self.images[self.index], self.velocity * -3)   # affect rotation
         else:
-            self.image = pygame.transform.rotate(self.images[self.index], -270)  # rotate 90 degrees
+            self.image = pygame.transform.rotate(self.images[self.index], -250)  # rotate 90 degrees
 
 
 class Column(pygame.sprite.Sprite):     # create class for column sprite
@@ -97,8 +97,23 @@ class Column(pygame.sprite.Sprite):     # create class for column sprite
             self.kill()
 
 
+class Coin(pygame.sprite.Sprite):      # class for our coin sprite, using thickems3.png as the placeholder atm.
+    def __init__(self, x_coord, y_coord):
+        pygame.sprite.Sprite.__init__(self)
+        img = pygame.image.load('images/thickems3.png')  # Replace thickems3 once we find a coin
+        self.image = pygame.transform.scale(img, (25, 25))
+        self.rect = self.image.get_rect()
+        self.rect.center = (x_coord, y_coord)
+
+    def update(self):       # have columns scroll along in the game with player
+        self.rect.x -= scroll_speed
+        if self.rect.right < 0:
+            self.kill()
+
+
 cat_pack = pygame.sprite.Group()    # variable for sprites
 column_group = pygame.sprite.Group()
+coin_group = pygame.sprite.Group()
 
 thickems = Cat(100, int(screen_height / 2))
 
@@ -112,7 +127,8 @@ while run_game:      # run game loop
     screen.blit(bg, (0, 0))     # draws the background
     cat_pack.draw(screen)      # draws Thickems the Cat onto screen
     cat_pack.update()          # update Thickems
-    column_group.draw(screen)  # draws columns to screen
+    column_group.draw(screen)  # draws columns onto screen
+    coin_group.draw(screen)    # draws coins onto screen
 
     screen.blit(ground_img, (ground_scroll, 768))   # draws the ground and scrolls
 
@@ -129,8 +145,11 @@ while run_game:      # run game loop
             column_height = random.randint(-100, 100)
             btm_column = Column(screen_width, int(screen_height / 2) + column_height, -1)
             top_column = Column(screen_width, int(screen_height / 2) + column_height, 1)
+            coins = Coin(500, 500)
             column_group.add(btm_column)
             column_group.add(top_column)
+            coin_group.add(coins)
+
             last_column = time_now
 
         ground_scroll -= scroll_speed   # draws ground and scrolls
@@ -138,6 +157,7 @@ while run_game:      # run game loop
             ground_scroll = 0
 
         column_group.update()       # call to update columns
+        coin_group.update()
 
     for event in pygame.event.get():        # press X on window to exit game
         if event.type == pygame.QUIT:
