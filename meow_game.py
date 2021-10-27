@@ -97,7 +97,7 @@ class Column(pygame.sprite.Sprite):     # create class for column sprite
             self.kill()
 
 
-class Coin(pygame.sprite.Sprite):      # class for our coin sprite, using thickems3.png as the placeholder atm.
+class Ravioli(pygame.sprite.Sprite):      # class for our ravioli sprite, using thickems3.png as the placeholder atm.
     def __init__(self, x_coord, y_coord):
         pygame.sprite.Sprite.__init__(self)
         img = pygame.image.load('images/thickems3.png')  # Replace thickems3 once we find a coin
@@ -113,7 +113,7 @@ class Coin(pygame.sprite.Sprite):      # class for our coin sprite, using thicke
 
 cat_pack = pygame.sprite.Group()    # variable for sprites
 column_group = pygame.sprite.Group()
-coin_group = pygame.sprite.Group()
+ravioli_group = pygame.sprite.Group()
 
 thickems = Cat(100, int(screen_height / 2))
 
@@ -128,12 +128,15 @@ while run_game:      # run game loop
     cat_pack.draw(screen)      # draws Thickems the Cat onto screen
     cat_pack.update()          # update Thickems
     column_group.draw(screen)  # draws columns onto screen
-    coin_group.draw(screen)    # draws coins onto screen
+    ravioli_group.draw(screen)    # draws ravioli onto screen
 
     screen.blit(ground_img, (ground_scroll, 768))   # draws the ground and scrolls
 
     if pygame.sprite.groupcollide(cat_pack, column_group, False, False) or thickems.rect.top < 0:   # for collision
         game_over = True
+
+#   if pygame.sprite.groupcollide(cat_pack, ravioli_group, False, False):    # for collision with ravioli
+        # Add score
 
     if thickems.rect.bottom > 768:  # if Thickems hit the ground, set condition for GAME OVER
         game_over = True
@@ -145,10 +148,10 @@ while run_game:      # run game loop
             column_height = random.randint(-100, 100)
             btm_column = Column(screen_width, int(screen_height / 2) + column_height, -1)
             top_column = Column(screen_width, int(screen_height / 2) + column_height, 1)
-            coins = Coin(500, 500)
+            ravioli = Ravioli(500, 500)
             column_group.add(btm_column)
             column_group.add(top_column)
-            coin_group.add(coins)
+            ravioli_group.add(ravioli)
 
             last_column = time_now
 
@@ -157,7 +160,7 @@ while run_game:      # run game loop
             ground_scroll = 0
 
         column_group.update()       # call to update columns
-        coin_group.update()
+        ravioli_group.update()
 
     for event in pygame.event.get():        # press X on window to exit game
         if event.type == pygame.QUIT:
