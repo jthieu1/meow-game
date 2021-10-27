@@ -4,6 +4,7 @@
 
 import pygame       # import pygame package to create working game
 from pygame.locals import *
+from pygame import mixer    # import ability to play sound
 import random
 
 pygame.init()
