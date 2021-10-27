@@ -7,6 +7,8 @@ from pygame.locals import *
 from pygame import mixer    # import ability to play sound
 import random
 
+pygame.mixer.pre_init(44100, -16, 2, 512)
+mixer.init()
 pygame.init()
 
 clock = pygame.time.Clock()     # set framerate of game
@@ -28,6 +30,9 @@ last_column = pygame.time.get_ticks() - column_frequency    # interval between l
 
 bg = pygame.image.load('images/bg.png')        # load resources used
 ground_img = pygame.image.load('images/terrain.png')
+
+pygame.mixer.music.load('sound/track01.wav')
+pygame.mixer.music.play(-1, 0.0, 0)     # music starts immediately at third 0
 
 
 class Cat(pygame.sprite.Sprite):        # class for our player sprite, Thickems the Cat
