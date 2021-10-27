@@ -1,5 +1,5 @@
 # Authors: Jenny Thieu, Jennifer Tran, and Yu "Dan" Liang
-# Start date: 10/26/2022
+# Start date: 10/26/2021
 # Meow Game with PyGame
 
 import pygame       # import pygame package to create working game
@@ -71,7 +71,7 @@ class Cat(pygame.sprite.Sprite):        # class for our player sprite, Thickems 
             self.image = self.images[self.index]    # update the image after the reset
             self.image = pygame.transform.rotate(self.images[self.index], self.velocity * -3)   # affect rotation
         else:
-            self.image = pygame.transform.rotate(self.images[self.index], -90)  # rotate 90 degrees
+            self.image = pygame.transform.rotate(self.images[self.index], -270)  # rotate 90 degrees
 
 
 class Column(pygame.sprite.Sprite):     # create class for column sprite
