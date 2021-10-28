@@ -100,8 +100,8 @@ class Column(pygame.sprite.Sprite):  # create class for column sprite
 class Ravioli(pygame.sprite.Sprite):  # class for our ravioli sprite, using thickems3.png as the placeholder atm.
     def __init__(self, x_coord, y_coord):
         pygame.sprite.Sprite.__init__(self)
-        img = pygame.image.load('images/thickems3.png')  # Replace thickems3 once we find a ravioli
-        self.image = pygame.transform.scale(img, (25, 25))
+        img = pygame.image.load('images/ravioli.png')  # Ravioli sprite
+        self.image = pygame.transform.scale(img, (75, 75))  # scale to 75% of size
         self.rect = self.image.get_rect()
         self.rect.center = (x_coord, y_coord)
 
@@ -157,11 +157,7 @@ while run_game:  # run game loop
             ground_scroll = 0
 
         column_group.update()  # call to update columns
-        ravioli_group.update() # call to update raviolis?? they don't spawn simultaneously atm
-
-        if pygame.sprite.groupcollide(cat_pack, ravioli_group, False, False):  # for collision with ravioli
-            ravioli.kill()
-            # Add to a score? Maybe do another sound effect?
+        ravioli_group.update()  # call to update raviolis?? they don't spawn simultaneously atm
 
     for event in pygame.event.get():  # press X on window to exit game
         if event.type == pygame.QUIT:
