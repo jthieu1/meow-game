@@ -145,7 +145,7 @@ while run_game:  # run game loop
             column_height = random.randint(-100, 100)
             btm_column = Column(screen_width, int(screen_height / 2) + column_height, -1)
             top_column = Column(screen_width, int(screen_height / 2) + column_height, 1)
-            ravioli = Ravioli(random.randint(200, 600), random.randint(200, 600))
+            ravioli = Ravioli(random.randint(200, 600), random.randint(200, 500))
             column_group.add(btm_column)
             column_group.add(top_column)
             ravioli_group.add(ravioli)
