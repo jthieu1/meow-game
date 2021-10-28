@@ -100,7 +100,7 @@ class Column(pygame.sprite.Sprite):  # create class for column sprite
 class Ravioli(pygame.sprite.Sprite):  # class for our ravioli sprite, using thickems3.png as the placeholder atm.
     def __init__(self, x_coord, y_coord):
         pygame.sprite.Sprite.__init__(self)
-        img = pygame.image.load('images/thickems3.png')  # Replace thickems3 once we find a coin
+        img = pygame.image.load('images/thickems3.png')  # Replace thickems3 once we find a ravioli
         self.image = pygame.transform.scale(img, (25, 25))
         self.rect = self.image.get_rect()
         self.rect.center = (x_coord, y_coord)
