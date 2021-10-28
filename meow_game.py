@@ -136,7 +136,7 @@ while run_game:      # run game loop
         game_over = True
 
 #   if pygame.sprite.groupcollide(cat_pack, ravioli_group, False, False):    # for collision with ravioli
-        # Add score
+        # Add to a score? Maybe do another sound effect?
 
     if thickems.rect.bottom > 768:  # if Thickems hit the ground, set condition for GAME OVER
         game_over = True
@@ -148,7 +148,7 @@ while run_game:      # run game loop
             column_height = random.randint(-100, 100)
             btm_column = Column(screen_width, int(screen_height / 2) + column_height, -1)
             top_column = Column(screen_width, int(screen_height / 2) + column_height, 1)
-            ravioli = Ravioli(500, 500)
+            ravioli = Ravioli(random.randint(100,900), random.randint(100,900))
             column_group.add(btm_column)
             column_group.add(top_column)
             ravioli_group.add(ravioli)
