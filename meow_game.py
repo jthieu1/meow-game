@@ -33,7 +33,7 @@ ground_img = pygame.image.load('images/terrain.png')
 
 pygame.mixer.music.load('sound/track01.wav')
 pygame.mixer.music.play(-1, 0.0, 0)  # music starts immediately at third 0
-ravioli_fx = pygame.mixer.Sound('sounds/545238_mr-fritz_item-sparkle.wav')
+ravioli_fx = pygame.mixer.Sound('sounds/ravioli.wav')
 ravioli_fx.set_volume(0.5)
 
 
