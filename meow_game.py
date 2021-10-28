@@ -157,7 +157,7 @@ while run_game:  # run game loop
             ground_scroll = 0
 
         column_group.update()  # call to update columns
-        ravioli_group.update()
+        ravioli_group.update() # call to update raviolis?? they don't spawn simultaneously atm
 
         if pygame.sprite.groupcollide(cat_pack, ravioli_group, False, False):  # for collision with ravioli
             ravioli.kill()
