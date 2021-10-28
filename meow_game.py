@@ -19,6 +19,7 @@ screen_height = 936
 
 screen = pygame.display.set_mode((screen_width, screen_height))  # display the window
 pygame.display.set_caption('Meow Game')  # set the window name
+font = pygame.font.SysFont('Benton Sans', 60)  # determine what font to use and size
 
 ground_scroll = 0  # speed which ground scrolls
 scroll_speed = 4
@@ -27,12 +28,23 @@ game_over = False
 column_gap = 200
 column_frequency = 1500  # how often pipes spawn in milliseconds
 last_column = pygame.time.get_ticks() - column_frequency  # interval between last column
+score = 0
+pass_column = False
+black = (0, 0, 0)
 
 bg = pygame.image.load('images/bg.png')  # load resources used
 ground_img = pygame.image.load('images/terrain.png')
 
 pygame.mixer.music.load('sound/track01.wav')
 pygame.mixer.music.play(-1, 0.0, 0)  # music starts immediately at third 0
+ravioli_fx = pygame.mixer.Sound('sound/ravioli.wav')
+ravioli_fx.set_volume(0.5)
+
+
+def draw_text(text, font, text_clr, x_coord, y_coord):
+    """Draws the font to appear on screen"""
+    img = font.render(text, True, text_clr)
+    screen.blit(img, (x_coord, y_coord))
 
 
 class Cat(pygame.sprite.Sprite):  # class for our player sprite, Thickems the Cat
@@ -131,6 +143,18 @@ while run_game:  # run game loop
     ravioli_group.draw(screen)  # draws ravioli onto screen
 
     screen.blit(ground_img, (ground_scroll, 768))  # draws the ground and scrolls
+
+    if len(column_group) > 0:  # check length of pipe group for scoring
+        if cat_pack.sprites()[0].rect.left > column_group.sprites()[0].rect.left \
+                and cat_pack.sprites()[0].rect.right < column_group.sprites()[0].rect.right \
+                and pass_column == False:
+            pass_column = True
+        if pass_column:
+            if cat_pack.sprites()[0].rect.left > column_group.sprites()[0].rect.right:
+                score += 1  # add score when column is passed
+                pass_column = False
+
+    draw_text(str(score), font, black, int(screen_width / 2), 20)  # draw the score to be visinle
 
     if pygame.sprite.groupcollide(cat_pack, column_group, False, False) or thickems.rect.top < 0:  # for collision
         game_over = True
