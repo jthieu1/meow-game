@@ -36,9 +36,7 @@ pygame.mixer.music.play(-1, 0.0, 0)     # music starts immediately at third 0
 
 
 class Cat(pygame.sprite.Sprite):        # class for our player sprite, Thickems the Cat
-    """Create sprite class for Cat"""
     def __init__(self, x_coord, y_coord):           # construct x and y coordinates
-        """Construct animation and x- and y-coordinates"""
         pygame.sprite.Sprite.__init__(self)
         self.images = []        # images used are sorted in a list
         self.index = 0          # start at first image

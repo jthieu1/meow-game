@@ -1,4 +1,4 @@
 # meow-game
-Thickems the Cat is on a quest to lose weight.
+Thickems the Cat wants his ravioli.
 
 Simple Flappy-bird style game made in Python and Pygame.
