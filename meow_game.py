@@ -180,7 +180,7 @@ while run_game:  # run game loop
         if abs(ground_scroll) > 35:
             ground_scroll = 0
 
-        column_group.update()  # call to update columns
+        column_group.update()   # call to update columns
         ravioli_group.update()  # call to update raviolis
 
     for event in pygame.event.get():  # press X on window to exit game
