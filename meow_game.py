@@ -181,7 +181,7 @@ while run_game:  # run game loop
             column_group.add(top_column)
 
             last_column = time_now
-        if time_now2 - last_ravi > ravioli_frequency:   # affect spawn
+        if time_now2 - last_ravi > ravioli_frequency:   # affect spawn in milliseconds
             ravioli = Ravioli(random.randint(360, (screen_width - 420)), random.randint(360, (screen_width - 420)))
             ravioli_group.add(ravioli)
 
