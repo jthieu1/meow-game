@@ -27,7 +27,9 @@ jumping = False
 game_over = False
 column_gap = 200
 column_frequency = 1500  # how often pipes spawn in milliseconds
+ravioli_frequency = 2000
 last_column = pygame.time.get_ticks() - column_frequency  # interval between last column
+last_ravi = pygame.time.get_ticks() - ravioli_frequency
 score = 0
 pass_column = False
 black = (0, 0, 0)
@@ -170,16 +172,20 @@ while run_game:  # run game loop
 
     if not game_over:  # condition for game to generate columns when not game over
         time_now = pygame.time.get_ticks()
+        time_now2 = pygame.time.get_ticks()
         if time_now - last_column > column_frequency:
             column_height = random.randint(-100, 100)
             btm_column = Column(screen_width, int(screen_height / 2) + column_height, -1)
             top_column = Column(screen_width, int(screen_height / 2) + column_height, 1)
-            ravioli = Ravioli(random.randint(360, (screen_width - 420)), random.randint(360, (screen_width - 420)))
             column_group.add(btm_column)
             column_group.add(top_column)
-            ravioli_group.add(ravioli)
 
             last_column = time_now
+        if time_now2 - last_ravi > ravioli_frequency:
+            ravioli = Ravioli(random.randint(360, (screen_width - 420)), random.randint(360, (screen_width - 420)))
+            ravioli_group.add(ravioli)
+
+            last_ravi = time_now2
 
         ground_scroll -= scroll_speed  # draws ground and scrolls
         if abs(ground_scroll) > 35:
