@@ -115,7 +115,7 @@ class Ravioli(pygame.sprite.Sprite):  # class for our ravioli sprite, using thic
     def __init__(self, x_coord, y_coord):
         pygame.sprite.Sprite.__init__(self)
         img = pygame.image.load('images/ravioli.png')  # Ravioli sprite
-        self.image = pygame.transform.scale(img, (75, 75))  # scale to 75% of size
+        self.image = pygame.transform.scale(img, (50, 50))  # scale to 75% of size
         self.rect = self.image.get_rect()
         self.rect.center = (x_coord, y_coord)
 
@@ -132,7 +132,7 @@ ravioli_group = pygame.sprite.Group()
 thickems = Cat(100, int(screen_height / 2))
 
 cat_pack.add(thickems)  # add Thickems to our sprite group
-score_ravi = Ravioli(65, 65)
+score_ravi = Ravioli(75, 75)
 ravioli_group.add(score_ravi)
 
 run_game = True
@@ -155,7 +155,7 @@ while run_game:  # run game loop
             pass_column = True
         if pass_column:
             if cat_pack.sprites()[0].rect.left > column_group.sprites()[0].rect.right:
-                score += 1  # add score when column is passed
+                score += 1   # add score when column is passed
                 pass_column = False
             if pygame.sprite.spritecollide(thickems, ravioli_group, True):
                 score += 1
