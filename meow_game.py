@@ -79,7 +79,7 @@ class Cat(pygame.sprite.Sprite):  # class for our player sprite, Thickems the Ca
                 self.clicking = False
 
             self.counter += 1  # increase counter for animation
-            tap_cooldown = 5  # after tapping five times, resets the animation so it can replay
+            tap_cooldown = 5   # after tapping five times, resets the animation so it can replay
 
             if self.counter > tap_cooldown:
                 self.counter = 0
