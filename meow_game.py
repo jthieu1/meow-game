@@ -117,7 +117,7 @@ class Ravioli(pygame.sprite.Sprite):  # class for our ravioli sprite, using thic
         self.rect = self.image.get_rect()
         self.rect.center = (x_coord, y_coord)
 
-    def update(self):  # have columns scroll along in the game with player
+    def update(self):  # have ravioli scroll along in the game with player
         self.rect.x -= scroll_speed
         if self.rect.right < 0:
             self.kill()
@@ -128,8 +128,10 @@ column_group = pygame.sprite.Group()
 ravioli_group = pygame.sprite.Group()
 
 thickems = Cat(100, int(screen_height / 2))
+ravi = Ravioli(100, int(screen_height / 2))
 
 cat_pack.add(thickems)  # add Thickems to our sprite group
+ravioli_group.add(ravi)
 
 run_game = True
 while run_game:  # run game loop
@@ -153,6 +155,9 @@ while run_game:  # run game loop
             if cat_pack.sprites()[0].rect.left > column_group.sprites()[0].rect.right:
                 score += 1  # add score when column is passed
                 pass_column = False
+            if pygame.sprite.spritecollide(thickems, ravioli_group, True):
+                score += 1
+                ravioli_fx.play()
 
     draw_text(str(score), font, black, int(screen_width / 2), 20)  # draw the score to be visinle
 
@@ -188,7 +193,7 @@ while run_game:  # run game loop
             run_game = False
         if event.type == pygame.MOUSEBUTTONDOWN and jumping == False and game_over == False:
             # player will start with Thickems in air
-            jumping = True   # Thickems can jump
+            jumping = True  # Thickems can jump
 
     pygame.display.update()
 
