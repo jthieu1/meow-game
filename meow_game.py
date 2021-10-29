@@ -79,7 +79,7 @@ class Cat(pygame.sprite.Sprite):  # class for our player sprite, Thickems the Ca
                 self.clicking = False
 
             self.counter += 1  # increase counter for animation
-            tap_cooldown = 5   # after tapping five times, resets the animation so it can replay
+            tap_cooldown = 5  # after tapping five times, resets the animation so it can replay
 
             if self.counter > tap_cooldown:
                 self.counter = 0
@@ -130,6 +130,8 @@ ravioli_group = pygame.sprite.Group()
 thickems = Cat(100, int(screen_height / 2))
 
 cat_pack.add(thickems)  # add Thickems to our sprite group
+score_ravi = Ravioli(75, 75)
+ravioli_group.add(score_ravi)
 
 run_game = True
 while run_game:  # run game loop
@@ -153,6 +155,9 @@ while run_game:  # run game loop
             if cat_pack.sprites()[0].rect.left > column_group.sprites()[0].rect.right:
                 score += 1  # add score when column is passed
                 pass_column = False
+            if pygame.sprite.spritecollide(thickems, ravioli_group, True):
+                score += 1
+                ravioli_fx.play()
 
     draw_text(str(score), font, black, int(screen_width / 2), 20)  # draw the score to be visible
 
@@ -180,7 +185,7 @@ while run_game:  # run game loop
         if abs(ground_scroll) > 35:
             ground_scroll = 0
 
-        column_group.update()   # call to update columns
+        column_group.update()  # call to update columns
         ravioli_group.update()  # call to update raviolis
 
     for event in pygame.event.get():  # press X on window to exit game
