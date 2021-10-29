@@ -1,4 +1,6 @@
 #   List of resources used
-#   Item pick-up sound (in the case that we implement items): https://freesound.org/people/Mr._Fritz_/sounds/545238/
+#   Item pick-up sound: Item Sparkle by Mr._Fritz_ https://freesound.org/people/Mr._Fritz_/sounds/545238/
+#   Character Design: By Jennifer
 #   Artwork and sprites: By Jenny
-#   Soundtrack: By Jenny
+#   Music Composition: By Jenny
+#   Debugging: By Jenny and Dan

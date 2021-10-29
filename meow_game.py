@@ -27,7 +27,7 @@ jumping = False
 game_over = False
 column_gap = 200
 column_frequency = 1500  # how often pipes spawn in milliseconds
-ravioli_frequency = 2000
+ravioli_frequency = 1600
 last_column = pygame.time.get_ticks() - column_frequency  # interval between last column
 last_ravi = pygame.time.get_ticks() - ravioli_frequency
 score = 0
@@ -50,7 +50,9 @@ def draw_text(text, font, text_clr, x_coord, y_coord):
 
 
 class Cat(pygame.sprite.Sprite):  # class for our player sprite, Thickems the Cat
+    """Thickems the Cat player sprite class"""
     def __init__(self, x_coord, y_coord):  # construct x and y coordinates
+        """Loads the Thickems sprite and sets his speed and rect values"""
         pygame.sprite.Sprite.__init__(self)
         self.images = []  # images used are sorted in a list
         self.index = 0  # start at first image
@@ -157,9 +159,9 @@ while run_game:  # run game loop
             if cat_pack.sprites()[0].rect.left > column_group.sprites()[0].rect.right:
                 score += 1   # add score when column is passed
                 pass_column = False
-            if pygame.sprite.spritecollide(thickems, ravioli_group, True):
-                score += 1
-                ravioli_fx.play()
+        if pygame.sprite.spritecollide(thickems, ravioli_group, True):
+            score += 1
+            ravioli_fx.play()
 
     draw_text(str(score), font, black, int(screen_width / 2), 20)  # draw the score to be visible
 
