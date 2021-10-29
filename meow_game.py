@@ -52,6 +52,7 @@ def draw_text(text, font, text_clr, x_coord, y_coord):
 class Cat(pygame.sprite.Sprite):  # class for our player sprite, Thickems the Cat
     """Thickems the Cat player sprite class"""
     def __init__(self, x_coord, y_coord):  # construct x and y coordinates
+        """Loads the Thickems sprite and sets his speed and rect values"""
         pygame.sprite.Sprite.__init__(self)
         self.images = []  # images used are sorted in a list
         self.index = 0  # start at first image
