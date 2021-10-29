@@ -132,7 +132,7 @@ ravioli_group = pygame.sprite.Group()
 thickems = Cat(100, int(screen_height / 2))
 
 cat_pack.add(thickems)  # add Thickems to our sprite group
-score_ravi = Ravioli(75, 75)
+score_ravi = Ravioli(65, 65)
 ravioli_group.add(score_ravi)
 
 run_game = True
