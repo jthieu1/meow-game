@@ -188,7 +188,7 @@ while run_game:  # run game loop
             run_game = False
         if event.type == pygame.MOUSEBUTTONDOWN and jumping == False and game_over == False:
             # player will start with Thickems in air
-            jumping = True   # Thickems can jump
+            jumping = True  # Thickems can jump
 
     pygame.display.update()
 
