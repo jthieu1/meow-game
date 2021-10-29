@@ -117,7 +117,7 @@ class Ravioli(pygame.sprite.Sprite):  # class for our ravioli sprite, using thic
         self.rect = self.image.get_rect()
         self.rect.center = (x_coord, y_coord)
 
-    def update(self):  # have columns scroll along in the game with player
+    def update(self):  # have raviolis scroll along in the game with player
         self.rect.x -= scroll_speed
         if self.rect.right < 0:
             self.kill()
@@ -154,7 +154,7 @@ while run_game:  # run game loop
                 score += 1  # add score when column is passed
                 pass_column = False
 
-    draw_text(str(score), font, black, int(screen_width / 2), 20)  # draw the score to be visinle
+    draw_text(str(score), font, black, int(screen_width / 2), 20)  # draw the score to be visible
 
     if pygame.sprite.groupcollide(cat_pack, column_group, False, False) or thickems.rect.top < 0:  # for collision
         game_over = True
@@ -181,7 +181,7 @@ while run_game:  # run game loop
             ground_scroll = 0
 
         column_group.update()  # call to update columns
-        ravioli_group.update()  # call to update raviolis?? they don't spawn simultaneously atm
+        ravioli_group.update()  # call to update raviolis
 
     for event in pygame.event.get():  # press X on window to exit game
         if event.type == pygame.QUIT:
