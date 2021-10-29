@@ -155,7 +155,7 @@ while run_game:  # run game loop
             if cat_pack.sprites()[0].rect.left > column_group.sprites()[0].rect.right:
                 score += 1  # add score when column is passed
                 pass_column = False
-            if pygame.sprite.spritecollide(thickems, ravioli_group, True):
+            if pygame.sprite.spritecollide(thickems, ravioli_group, True):  # if thickems touch ravioli, score
                 score += 1
                 ravioli_fx.play()
 
