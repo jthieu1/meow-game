@@ -139,8 +139,8 @@ while run_game:  # run game loop
     clock.tick(fps)
 
     screen.blit(bg, (0, 0))  # draws the background
-    cat_pack.draw(screen)  # draws Thickems the Cat onto screen
-    cat_pack.update()       # update Thickems
+    cat_pack.draw(screen)    # draws Thickems the Cat onto screen
+    cat_pack.update()         # update Thickems
     column_group.draw(screen)  # draws columns onto screen
     ravioli_group.draw(screen)  # draws ravioli onto screen
 
