@@ -37,7 +37,7 @@ black = (0, 0, 0)
 # Images Section
 bg = pygame.image.load('images/bg.png')  # load resources used
 ground_img = pygame.image.load('images/terrain.png')
-tryHarder_img = pygame.image.load('images/tryagain.png')    #Game over button
+tryHarder_img = pygame.image.load('images/tryagain.png')    # Game over button
 
 # Sound Section
 pygame.mixer.music.load('sound/track01.wav')
@@ -53,6 +53,7 @@ def draw_text(text, font, text_clr, x_coord, y_coord):
 
 
 def reset_game():
+    """Resets the score and the game"""
     column_group.empty()
     thickems.rect.x = 100
     thickems.rect.y = int(screen_height / 2)
@@ -78,7 +79,7 @@ class Cat(pygame.sprite.Sprite):  # class for our player sprite, Thickems the Ca
         self.clicking = False
 
     def update(self):
-
+        """Updates the jumping and game over conditions"""
         if jumping:
             self.velocity += 0.5  # speed Thickems moves
             if self.velocity > 8:
@@ -146,6 +147,7 @@ class Restart():
         screen.blit(self.image, (self.rect.x, self.rect.y))
 
         return click
+
 
 class Ravioli(pygame.sprite.Sprite):  # class for our ravioli sprite, using thickems3.png as the placeholder atm.
     def __init__(self, x_coord, y_coord):
