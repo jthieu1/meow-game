@@ -34,9 +34,12 @@ score = 0
 pass_column = False
 black = (0, 0, 0)
 
+# Images Section
 bg = pygame.image.load('images/bg.png')  # load resources used
 ground_img = pygame.image.load('images/terrain.png')
+tryHarder_img = pygame.image.load('images/tryagain.png')    #Game over button
 
+# Sound Section
 pygame.mixer.music.load('sound/track01.wav')
 pygame.mixer.music.play(-1, 0.0, 0)  # music starts immediately at third 0
 ravioli_fx = pygame.mixer.Sound('sound/ravioli.wav')
@@ -47,6 +50,14 @@ def draw_text(text, font, text_clr, x_coord, y_coord):
     """Draws the font to appear on screen"""
     img = font.render(text, True, text_clr)
     screen.blit(img, (x_coord, y_coord))
+
+
+def reset_game():
+    column_group.empty()
+    thickems.rect.x = 100
+    thickems.rect.y = int(screen_height / 2)
+    score = 0
+    return score
 
 
 class Cat(pygame.sprite.Sprite):  # class for our player sprite, Thickems the Cat
@@ -113,6 +124,29 @@ class Column(pygame.sprite.Sprite):  # create class for column sprite
             self.kill()
 
 
+class Restart():
+    def __init__(self, x_coord, y_coord, image):
+        self.image = image
+        self.rect = self.image.get_rect()
+        self.rect.topleft = (x_coord, y_coord)
+
+    def draw(self):
+
+        click = False
+
+        # Mouse position
+        pos = pygame.mouse.get_pos()
+
+        # Checks if user's mouse is over the button
+        if self.rect.collidepoint(pos):
+            if pygame.mouse.get_pressed()[0] == 1:
+                click = True
+
+        # Draws the button
+        screen.blit(self.image, (self.rect.x, self.rect.y))
+
+        return click
+
 class Ravioli(pygame.sprite.Sprite):  # class for our ravioli sprite, using thickems3.png as the placeholder atm.
     def __init__(self, x_coord, y_coord):
         pygame.sprite.Sprite.__init__(self)
@@ -132,6 +166,8 @@ column_group = pygame.sprite.Group()
 ravioli_group = pygame.sprite.Group()
 
 thickems = Cat(100, int(screen_height / 2))
+
+button = Restart(screen_width // 2 - 50, screen_height // 2 - 100, tryHarder_img)
 
 cat_pack.add(thickems)  # add Thickems to our sprite group
 score_ravi = Ravioli(75, 75)
@@ -195,6 +231,11 @@ while run_game:  # run game loop
 
         column_group.update()   # call to update columns
         ravioli_group.update()  # call to update raviolis
+
+    if game_over == True:
+        if button.draw() == True:
+            game_over = False
+            score = reset_game()
 
     for event in pygame.event.get():  # press X on window to exit game
         if event.type == pygame.QUIT:
