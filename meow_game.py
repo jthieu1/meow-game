@@ -2,25 +2,37 @@
 # Start date: 10/26/2021
 # Meow Game with PyGame
 
-import pygame  # import pygame package to create working game
+import pygame
 from pygame.locals import *
-from pygame import mixer  # import ability to play sound
+from pygame import mixer
+
 import random
 
 pygame.mixer.pre_init(44100, -16, 2, 512)
 mixer.init()
 pygame.init()
 
-clock = pygame.time.Clock()  # set framerate of game
+# Framerate
+clock = pygame.time.Clock()
 fps = 60
+low_fps = 30
 
-screen_width = 864  # set game window size
+# Window size
+screen_width = 864
 screen_height = 936
 
-screen = pygame.display.set_mode((screen_width, screen_height))  # display the window
-pygame.display.set_caption('Meow Game')  # set the window name
-font = pygame.font.SysFont('Benton Sans', 60)  # determine what font to use and size
+# Colors for fonts
+black = (0, 0, 0)
+white = (255, 255, 255)
+baby_blue = (137, 207, 240)
 
+# Screen display
+screen = pygame.display.set_mode((screen_width, screen_height))
+pygame.display.set_caption('Meow Game')  # set the window name
+font = pygame.font.SysFont('Benton Sans', 60)  # font setting
+small_font = pygame.font.SysFont('Benton Sans', 35)
+
+# Game variables
 ground_scroll = 0  # speed which ground scrolls
 scroll_speed = 4
 jumping = False
@@ -32,12 +44,11 @@ last_column = pygame.time.get_ticks() - column_frequency  # interval between las
 last_ravi = pygame.time.get_ticks() - ravioli_frequency
 score = 0
 pass_column = False
-black = (0, 0, 0)
 
 # Images Section
 bg = pygame.image.load('images/bg.png')  # load resources used
 ground_img = pygame.image.load('images/terrain.png')
-tryHarder_img = pygame.image.load('images/tryagain.png')    # Game over button
+tryHarder_img = pygame.image.load('images/tryagain.png')  # Game over button
 
 # Sound Section
 pygame.mixer.music.load('sound/track01.wav')
@@ -46,12 +57,14 @@ ravioli_fx = pygame.mixer.Sound('sound/ravioli.wav')
 ravioli_fx.set_volume(0.5)
 
 
+# Text render
 def draw_text(text, font, text_clr, x_coord, y_coord):
     """Draws the font to appear on screen"""
     img = font.render(text, True, text_clr)
     screen.blit(img, (x_coord, y_coord))
 
 
+# Score reset
 def reset_game():
     """Resets the score and the game"""
     column_group.empty()
@@ -61,8 +74,10 @@ def reset_game():
     return score
 
 
-class Cat(pygame.sprite.Sprite):  # class for our player sprite, Thickems the Cat
+# Sprite class for Thickems
+class Cat(pygame.sprite.Sprite):
     """Thickems the Cat player sprite class"""
+
     def __init__(self, x_coord, y_coord):  # construct x and y coordinates
         """Loads the Thickems sprite and sets his speed and rect values"""
         pygame.sprite.Sprite.__init__(self)
@@ -95,7 +110,7 @@ class Cat(pygame.sprite.Sprite):  # class for our player sprite, Thickems the Ca
                 self.clicking = False
 
             self.counter += 1  # increase counter for animation
-            tap_cooldown = 5   # after tapping five times, resets the animation so it can replay
+            tap_cooldown = 5  # after tapping five times, resets the animation so it can replay
 
             if self.counter > tap_cooldown:
                 self.counter = 0
@@ -108,10 +123,12 @@ class Cat(pygame.sprite.Sprite):  # class for our player sprite, Thickems the Ca
             self.image = pygame.transform.rotate(self.images[self.index], -250)  # rotate 90 degrees
 
 
-class Column(pygame.sprite.Sprite):  # create class for column sprite
+class Column(pygame.sprite.Sprite):
+    """Creates column sprite"""
     def __init__(self, x_coord, y_coord, position):
+        """Initialize coordinates and load the sprite image"""
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load('images/column.png')  # load the column image
+        self.image = pygame.image.load('images/column.png')
         self.rect = self.image.get_rect()
         if position == 1:
             self.image = pygame.transform.flip(self.image, False, True)  # position columns upside down
@@ -119,20 +136,23 @@ class Column(pygame.sprite.Sprite):  # create class for column sprite
         if position == -1:
             self.rect.topleft = [x_coord, y_coord + int(column_gap / 2)]  # position column on ground
 
-    def update(self):  # have columns scroll along in the game with player
+    def update(self):
+        """Updates to have the columns continuously scroll along with the player's screen"""
         self.rect.x -= scroll_speed
         if self.rect.right < 0:
             self.kill()
 
 
+# Restart button
 class Restart():
+    """Create restart button"""
     def __init__(self, x_coord, y_coord, image):
         self.image = image
         self.rect = self.image.get_rect()
         self.rect.topleft = (x_coord, y_coord)
 
     def draw(self):
-
+        """Creates the button setting and conditions"""
         click = False
 
         # Mouse position
@@ -149,21 +169,26 @@ class Restart():
         return click
 
 
-class Ravioli(pygame.sprite.Sprite):  # class for our ravioli sprite, using thickems3.png as the placeholder atm.
+# Ravioli sprite
+class Ravioli(pygame.sprite.Sprite):
+    """Creates the ravioli sprite"""
     def __init__(self, x_coord, y_coord):
+        """Load the ravioli image at 50% scaled size and draws coordinates"""
         pygame.sprite.Sprite.__init__(self)
-        img = pygame.image.load('images/ravioli.png')  # Ravioli sprite
-        self.image = pygame.transform.scale(img, (50, 50))  # scale to 75% of size
+        img = pygame.image.load('images/ravioli.png')
+        self.image = pygame.transform.scale(img, (50, 50))
         self.rect = self.image.get_rect()
         self.rect.center = (x_coord, y_coord)
 
-    def update(self):  # have raviolis scroll along in the game with player
+    def update(self):
+        """Updates to have ravioli scroll along with player's screen"""
         self.rect.x -= scroll_speed
         if self.rect.right < 0:
             self.kill()
 
 
-cat_pack = pygame.sprite.Group()  # variable for sprites
+# Sprite variables
+cat_pack = pygame.sprite.Group()
 column_group = pygame.sprite.Group()
 ravioli_group = pygame.sprite.Group()
 
@@ -175,19 +200,21 @@ cat_pack.add(thickems)  # add Thickems to our sprite group
 score_ravi = Ravioli(75, 75)
 ravioli_group.add(score_ravi)
 
+# Run the game in a loop
 run_game = True
-while run_game:  # run game loop
+while run_game:
 
     clock.tick(fps)
 
     screen.blit(bg, (0, 0))  # draws the background
-    cat_pack.draw(screen)    # draws Thickems the Cat onto screen
-    cat_pack.update()         # update Thickems
+    cat_pack.draw(screen)  # draws Thickems the Cat onto screen
+    cat_pack.update()  # update Thickems
     column_group.draw(screen)  # draws columns onto screen
     ravioli_group.draw(screen)  # draws ravioli onto screen
 
     screen.blit(ground_img, (ground_scroll, 768))  # draws the ground and scrolls
 
+    # check score
     if len(column_group) > 0:  # check length of pipe group for scoring
         if cat_pack.sprites()[0].rect.left > column_group.sprites()[0].rect.left \
                 and cat_pack.sprites()[0].rect.right < column_group.sprites()[0].rect.right \
@@ -195,7 +222,7 @@ while run_game:  # run game loop
             pass_column = True
         if pass_column:
             if cat_pack.sprites()[0].rect.left > column_group.sprites()[0].rect.right:
-                score += 1   # add score when column is passed
+                score += 1  # add score when column is passed
                 pass_column = False
         if pygame.sprite.spritecollide(thickems, ravioli_group, True):
             score += 1
@@ -203,14 +230,16 @@ while run_game:  # run game loop
 
     draw_text(str(score), font, black, int(screen_width / 2), 20)  # draw the score to be visible
 
-    if pygame.sprite.groupcollide(cat_pack, column_group, False, False) or thickems.rect.top < 0:  # for collision
+    # collide and game over
+    if pygame.sprite.groupcollide(cat_pack, column_group, False, False) or thickems.rect.top < 0:
         game_over = True
 
     if thickems.rect.bottom > 768:  # if Thickems hit the ground, set condition for GAME OVER
         game_over = True
         jumping = False
 
-    if not game_over:  # condition for game to generate columns when not game over
+    # when game not over spawn columns and ravioli
+    if not game_over and jumping:
         time_now = pygame.time.get_ticks()
         time_now2 = pygame.time.get_ticks()
         if time_now - last_column > column_frequency:
@@ -221,7 +250,7 @@ while run_game:  # run game loop
             column_group.add(top_column)
 
             last_column = time_now
-        if time_now2 - last_ravi > ravioli_frequency:   # affect spawn in milliseconds
+        if time_now2 - last_ravi > ravioli_frequency:  # affect spawn in milliseconds
             ravioli = Ravioli(random.randint(360, (screen_width - 420)), random.randint(360, (screen_width - 420)))
             ravioli_group.add(ravioli)
 
@@ -231,15 +260,16 @@ while run_game:  # run game loop
         if abs(ground_scroll) > 35:
             ground_scroll = 0
 
-        column_group.update()   # call to update columns
+        column_group.update()  # call to update columns
         ravioli_group.update()  # call to update raviolis
 
-    if game_over == True:
-        if button.draw() == True:
+# Game over and make restart button selectable
+    if game_over:
+        if button.draw():
             game_over = False
             score = reset_game()
 
-    for event in pygame.event.get():  # press X on window to exit game
+    for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run_game = False
         if event.type == pygame.MOUSEBUTTONDOWN and jumping == False and game_over == False:
