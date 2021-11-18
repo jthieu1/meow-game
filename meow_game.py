@@ -263,7 +263,7 @@ while run_game:
         column_group.update()  # call to update columns
         ravioli_group.update()  # call to update raviolis
 
-# Game over and make restart button selectable
+# Game over and make restart button selectable to player
     if game_over:
         if button.draw():
             game_over = False
